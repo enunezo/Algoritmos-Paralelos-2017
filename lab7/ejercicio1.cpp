@@ -21,9 +21,9 @@ int main()
     for(int j = 0 ; j < N ; ++j)
       hB[i][j] = rand() % 100;
   
-  cudaMalloc((void**) &dA, N*sizeof(float));
-  cudaMalloc((void**) &dB, N*sizeof(float));
-  cudaMalloc((void**) &dC, N*sizeof(float));
+  cudaMalloc((void**) &dA, N*N*sizeof(float));
+  cudaMalloc((void**) &dB, N*N*sizeof(float));
+  cudaMalloc((void**) &dC, N*N*sizeof(float));
   
   cudaMemcpy(dA,hA,N*sizeof(float),cudaMemcpyHostToDevice);
   cudaMemcpy(dB,hB,N*sizeof(float),cudaMemcpyHostToDevice);
