@@ -1,13 +1,12 @@
 #include <stdio.h>
 
 const int N = 10;
-const int blocksize = 7;
 
 __global__
 void matrixveecmultkernel(float *A, float *B,float *C, int n){
   int i = threadIdx.x+blockDim.x * blockIdx.x;
   if (i<n)
-    C[i] += A[i*blockIdx+i]*B[i];
+    C[i] += A[i*blockIdx.x+i]*B[i];
 }
 
 int main(){
@@ -20,16 +19,20 @@ int main(){
       hB[i] = rand() % 100;
   
   cudaMalloc((void**) &dA, N*N*sizeof(float));
-  cudaMalloc((void*) &dB, N*sizeof(float));
-  cudaMalloc((void*) &dC, N*sizeof(float));
+  cudaMalloc((void**) &dB, N*sizeof(float));
+  cudaMalloc((void**) &dC, N*sizeof(float));
   
+  cudaMemcpy(dA,hA,N*N*sizeof(float),cudaMemcpyHostToDevice);
   cudaMemcpy(dB,hB,N*sizeof(float),cudaMemcpyHostToDevice);
-  cudaMemcpy(dC,hC,N*sizeof(float),cudaMemcpyHostToDevice);
 
   matrixveecmultkernel<<<   N/256, 256   >>>(dA, dB, dC, N);
   //
-  cudaMemcpy(hA,dA,N*sizeof(float),cudaMemcpyDeviceToHost);
+  cudaMemcpy(hC,dC,N*sizeof(float),cudaMemcpyDeviceToHost);
   cudaFree(dB);
   cudaFree(dC);
   cudaFree(dA);
+
+  for (int i = 0; i < N; ++i){
+    printf ("%4.2f \n", hC[i]);
+  }
 }

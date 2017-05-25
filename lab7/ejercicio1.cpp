@@ -21,9 +21,9 @@ int main()
     for(int j = 0 ; j < N ; ++j)
       hB[i][j] = rand() % 100;
   
-  cudaMalloc((void**) &dA, N*N*sizeof(float));
-  cudaMalloc((void**) &dB, N*N*sizeof(float));
-  cudaMalloc((void**) &dC, N*N*sizeof(float));
+  cudaMalloc((void**) &dA, N*sizeof(float));
+  cudaMalloc((void**) &dB, N*sizeof(float));
+  cudaMalloc((void**) &dC, N*sizeof(float));
   
   cudaMemcpy(dA,hA,N*sizeof(float),cudaMemcpyHostToDevice);
   cudaMemcpy(dB,hB,N*sizeof(float),cudaMemcpyHostToDevice);
@@ -34,5 +34,13 @@ int main()
   cudaFree(dB);
   cudaFree(dC);
   cudaFree(dA);
+
+  for (int i = 0; i < N; ++i){
+    for (int j = 0; j < N; ++j){
+      /* code */
+       printf ("%4.2f \n", hC[i][j]);
+    }
+    cout<<endl;
+  }
   
 }
