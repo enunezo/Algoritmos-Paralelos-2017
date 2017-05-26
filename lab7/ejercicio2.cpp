@@ -12,11 +12,19 @@ void matrixveecmultkernel(float *A, float *B,float *C, int n){
 int main(){
   float hA[N][N], hB[N] , hC[N];
   float *dA, * dB , *dC;
-  for(int i = 0 ; i < N ; ++i)
-    for(int j = 0 ; j < N ; ++j)
+  for(int i = 0 ; i < N ; ++i){
+    for(int j = 0 ; j < N ; ++j){
       hA[i][j] = rand() % 100;
-  for(int i = 0 ; i < N ; ++i)
-      hB[i] = rand() % 100;
+      printf ("%4.2f \t", hA[i][j]);
+    }
+    printf ("\n");
+  }
+  printf ("\n");
+  for(int i = 0 ; i < N ; ++i){
+    hB[i] = rand() % 100;
+    printf ("%4.2f \t", hB[i]);
+  }
+  printf ("\n");
   
   cudaMalloc((void**) &dA, N*N*sizeof(float));
   cudaMalloc((void**) &dB, N*sizeof(float));
